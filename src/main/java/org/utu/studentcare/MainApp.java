@@ -3,7 +3,7 @@ package org.utu.studentcare;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.utu.studentcare.applogic.DBApp;
 import org.utu.studentcare.javafx.FXConsole;
@@ -35,14 +35,12 @@ public class MainApp extends Application {
      * TODO: tämä kaikki halutaan korvata graafisella käyttöliittymällä!
      */
     private void startTextModeUI(Stage stage) {
-        FXConsole console = new FXConsole();
+        FXConsole console = new FXConsole(true, true, new TextArea());
 
         stage.setWidth(1200);
         stage.setHeight(700);
         stage.show();
-        stage.setScene(new Scene(new BorderPane(console) {{
-            setBottom(console.inputField);
-        }}));
+        stage.setScene(new Scene(console));
 
         DBApp.init("value4life.db", s -> { Platform.runLater(stage::close); console.close(); s.accept(null); Platform.exit(); }, console.commands);
 
