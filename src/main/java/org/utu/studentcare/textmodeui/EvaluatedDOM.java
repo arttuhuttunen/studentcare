@@ -65,7 +65,7 @@ class EvaluatedDOM extends AbstractDOM<String, Component, AbstractComponentConta
                 return tContent == null ? List.of() : List.of(tContent);
             case 4:
                 for (String line : print(((Link) component).child, linkCounter))
-                    content.add(linkCounter.get() + ") " + line);
+                    if (!line.equals("")) content.add(linkCounter.get() + ") " + line);
                 return content;
         }
         throw new Error("Unknown node: " + component);

@@ -58,8 +58,8 @@ public class DBApp implements Runnable {
                     .h3("Toiminnot:")
                     .a("joinCourses", "Liity kurssille")
                     .a_("studentCourses", ss -> s.user.attending(s.connection).isEmpty() ? null : "Opiskelemasi kurssit")
-                    .a("teachCourses", s.user.isTeacher ? "Ala opettaa kurssia" : "")
-                    .a("gradeCourses", s.user.isTeacher ? "Arvioi kurssisuorituksia" : "")
+                    .a("teachCourses", s.user.isTeacher ? "Ala opettaa kurssia" : null)
+                    .a("gradeCourses", s.user.isTeacher ? "Arvioi kurssisuorituksia" : null)
                     .a_("approveCourses", ss -> !s.user.isAdmin ? null : "Opintorekisteriin kirjaukset" + (CourseGrade.waitingApproval(s.connection).isEmpty() ? "(kaikki ok!)" : " (uutta kirjattavaa!)"))
                     .a("wipeDB", s.user.isAdmin ? "Alusta tietokanta" : null)
                     .a("logout", s.active() ? "Kirjaudu ulos" : null)
@@ -279,7 +279,7 @@ public class DBApp implements Runnable {
             }),
             // alustaa tietokannan
             new Menu("wipeDB", "S", s -> c -> c
-                    .p(ss -> DBCleaner.initDB(s.connection, 0))
+                    .p(ss -> { new DBCleaner(s.connection).wipeTables().populateTables(); return "Tietokanta alustettu uudelleen!"; })
                     .a("main", "Takaisin päävalikkoon")
             ),
             // kirjautuu ulos
@@ -385,6 +385,16 @@ public class DBApp implements Runnable {
         } catch (SQLException e) {
             System.err.println("SQL ERROR:" + e.getMessage());
             if (e.getSQLState() != null) System.err.println(e.getSQLState());
+
+            if (e.getMessage().contains("SQLITE_LOCKED")) {
+                System.out.println("Lukitusvirhe");
+                System.out.println("------------\n");
+                System.out.println("Tietokanta on lukittu, ts. tietokanta on juuri nyt käytössä joko");
+                System.out.println("StudentCaren toisessa instanssissa (sulje stop-napilla IDE:stä)");
+                System.out.println("tai editoit kantaa jollain toisella ohjelmalla. Ohjelma sulkeutuu");
+                System.out.println("nyt pakotetusti, ettei tietokanta vahingossa korruptoidu.");
+            }
+
         } catch (Exception e) {
             System.err.println("ERROR:" + e.getMessage());
         }
