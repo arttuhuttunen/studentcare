@@ -118,7 +118,7 @@ public class DBApp implements Runnable {
                         .h3("Kurssisuoritukset:")
                         .li(grades.stream().map(g -> c.p(s2 -> g.overview(s.connection))))
                         .h3("Toiminnot:")
-                        .li(exs.exercises.stream().filter(Exercise::uploaded).map(e -> c.a(l -> l.x("studentCourseExercise").x(s.params()).x(e.exerciseId), "Palauta harjoitus " + e.exerciseId)))
+                        .li(exs.exercises.stream().filter(e -> !e.uploaded()).map(e -> c.a(l -> l.x("studentCourseExercise").x(s.params()).x(e.exerciseId), "Palauta harjoitus " + e.exerciseId)))
                         .br()
                         .a(l -> l.x("partCourse").x(s.param(1)).x(s.user.id), "Poistu kurssilta")
                         .a("studentCourses", "Takaisin");
