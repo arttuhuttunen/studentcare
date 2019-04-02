@@ -65,7 +65,7 @@ public class DBApp implements Runnable {
                     .a("logout", s.active() ? "Kirjaudu ulos" : null)
 
             ),
-            // oppilas valitsee kurssin, jolle liittyä
+            // opiskelija valitsee kurssin, jolle liittyä
             new Menu("joinCourses", "S", s -> c -> c
                     .h1("Valitse opiskeltava kurssi vapaista kursseista")
                     .nest(cc -> cc.li(s.user.notAttending(s.connection).stream().map(co -> c.a(l -> l.x("joinCourse").x(co.instanceId), co.wholeNameId(40)))))
@@ -91,7 +91,7 @@ public class DBApp implements Runnable {
                         .p("Liitytään opettamaan kurssille " + s.param(1))
                         .a("teachCourses", "Takaisin");
             }),
-            // oppilaan valikko, josta valita tarkasteltava kurssi. kursseille pitää olla liittynyt aiemmin
+            // opiskelijan valikko, josta valita tarkasteltava kurssi. kursseille pitää olla liittynyt aiemmin
             new Menu("studentCourses", "S", s -> c -> c
                     .h1("Valitse opiskeltavista kursseistasi")
                     .nest(cc -> cc.li(s.user.attending(s.connection).stream().map(co -> c.a(l -> l.x("studentCourse").x(co.instanceId), co.wholeNameId(40)))))
@@ -205,7 +205,7 @@ public class DBApp implements Runnable {
                         .p("Pisteiden mukaan: " + grade.map(ValRange::toString).orElse("Kurssilla ei ole laskukaavaa arvosanalle!"))
                         .p("Kirjattu kurssiarvosana: " + cg.map(CourseGrade::shortOverview).orElse("-"))
                         .a(l -> l.x("gradeCourseStudentWith").x(s.params()).x(gradeNum), gradeNum == -1 ? null : "Hyväksy kurssiarvosana " + gradeNum)
-                        .a(l -> l.x("gradeCourse").x(s.params()), "Takaisin");
+                        .a(l -> l.x("gradeCourse").x(s.param(1)), "Takaisin");
             }),
             // tietyn kurssin tietyn opiskelijan kurssisuorituksen kirjaus hyväksyttäväksi opintorekisteriin
             new Menu("gradeCourseStudentWith", "SSII", s -> {
@@ -222,7 +222,7 @@ public class DBApp implements Runnable {
                         .li(exs.exercises.stream().map(ex -> c.a(l -> l.x("gradeCourseStudentExercise").x(s.param(1)).x(s.paramI(2)).x(ex.exerciseId), s2 -> c.p(ex.status(s.connection)))))
                         .h3("Pistelasku:")
                         .li(exs.specs.getGradingDecls().stream().map(co -> c.p(co.toString())))
-                        .a(l -> l.x("gradeCourseStudent").x(s.params()), "Takaisin");
+                        .a(l -> l.x("gradeCourseStudent").x(s.param(1)).x(s.paramI(2)), "Takaisin");
             }),
             // tietyn kurssin tietyn opiskelijan tietyn harjoituksen arviointi pisteillä
             new Menu("gradeCourseStudentExercise", "SSIS", s -> {
@@ -239,7 +239,7 @@ public class DBApp implements Runnable {
                                 .p("Arvioi pistein:")
                                 .li(spec.possibleValues().stream().map(v -> c.a(l -> l.x("gradeCourseStudentExerciseWith").x(s.params()).x(v), v.toString() + " pistettä")))
                         )
-                        .a(l -> l.x("gradeCourseStudent").x(s.params()), "Takaisin");
+                        .a(l -> l.x("gradeCourseStudent").x(s.param(1)).x(s.paramI(2)), "Takaisin");
             }),
             // tietyn kurssin tietyn opiskelijan tietyn harjoituksen arvioinnin talletus
             new Menu("gradeCourseStudentExerciseWith", "SSISD", s -> {
@@ -251,7 +251,7 @@ public class DBApp implements Runnable {
                         .h1(s.param(1))
                         .h2(student.wholeNameId())
                         .p(s2 -> "Kirjattu suoritus: " + e2.verboseView(s.connection))
-                        .a(l -> l.x("gradeCourseStudent").x(s.params()), "Takaisin");
+                        .a(l -> l.x("gradeCourseStudent").x(s.param(1)).x(s.paramI(2)), "Takaisin");
             }),
             // tietyn kurssin tietyn opiskelijan tietyn suorituksen kirjaus opintorekisteriin
             new Menu("approveCourse", "SISS", s -> {

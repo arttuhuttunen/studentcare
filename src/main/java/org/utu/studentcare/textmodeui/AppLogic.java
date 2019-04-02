@@ -151,7 +151,8 @@ public class AppLogic {
             Menu activeMenu = menuMap.get(menuKey);
 
             if (activeMenu.apiSignature != null)
-                assert (activeMenu.apiSignature.equals(session.routeSignature()));
+                if (!activeMenu.apiSignature.equals(session.routeSignature()))
+                    throw new Error("API signature mismatch!");
             else
                 System.err.println("Unsafe menu API [" + activeMenuName + "]!");
 
