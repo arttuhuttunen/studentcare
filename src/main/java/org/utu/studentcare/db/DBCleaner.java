@@ -136,7 +136,7 @@ public class DBCleaner extends TaskStuff {
         {
             for (Course c : Course.all(connection)) {
                 for (int year = 2015; year <= 2019; year++) {
-                    int exerciseCount = new Random().nextInt(10);
+                    int exerciseCount = new Random().nextInt(9)+1;
                     int points = 0;
                     StringBuilder gradingRule = new StringBuilder("{");
                     for (char i = 'a'; i < 'a' + exerciseCount; i++) {
