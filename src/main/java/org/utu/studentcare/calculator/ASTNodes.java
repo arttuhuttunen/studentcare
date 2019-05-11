@@ -3,7 +3,9 @@ package org.utu.studentcare.calculator;
 import org.utu.studentcare.applogic.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Course specification parser AST.
@@ -330,7 +332,7 @@ class ASTNodes {
         }
 
         public OpExpr(char operator, ASTNode... args) {
-            this(operator, List.of(args));
+            this(operator, Arrays.asList(args));
         }
 
         private Expression left() {
@@ -356,15 +358,15 @@ class ASTNodes {
                 case '/':
                     return left.div(right);
                 case '^':
-                    List<Double> vals = List.of(
+                    List<Double> vals = Arrays.asList(
                             Math.pow(left.min, right.min),
                             Math.pow(left.max, right.min),
                             Math.pow(left.min, right.max),
                             Math.pow(left.max, right.max)
                     );
                     return new ValRangePlus(
-                            vals.stream().min(Double::compareTo).orElseThrow(),
-                            vals.stream().max(Double::compareTo).orElseThrow()
+                            vals.stream().min(Double::compareTo).orElseGet(() -> { throw new NoSuchElementException("No min value present"); }),
+                            vals.stream().max(Double::compareTo).orElseGet(() -> { throw new NoSuchElementException("No max value present"); })
                     );
                 case 'R':
                     double a = Math.sqrt(left.min),

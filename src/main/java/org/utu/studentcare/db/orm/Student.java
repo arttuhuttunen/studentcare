@@ -1,11 +1,12 @@
 package org.utu.studentcare.db.orm;
 
-import org.utu.studentcare.db.SQLConnection;
 import org.utu.studentcare.applogic.AppLogicException;
+import org.utu.studentcare.db.SQLConnection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -94,7 +95,7 @@ public class Student {
         return new Exercises(id, instanceId,
                 connection.findAll(Exercise::fromDB,
                         "select * from 'exercises' where studentId == ? and instanceId == ?", id, instanceId),
-                CourseInstance.findI(connection, instanceId).orElseThrow().exerciseSpecs()
+                CourseInstance.findI(connection, instanceId).orElseGet(() -> { throw new NoSuchElementException("No course instance present"); }).exerciseSpecs()
         );
     }
 

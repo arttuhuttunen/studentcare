@@ -1,6 +1,7 @@
 package org.utu.studentcare.textmodeui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -62,7 +63,7 @@ class EvaluatedDOM extends AbstractDOM<String, Component, AbstractComponentConta
                 return content;
             case 3:
                 String tContent = ((Text) component).content;
-                return tContent == null ? List.of() : List.of(tContent);
+                return tContent == null ? Arrays.asList() : Arrays.asList(tContent);
             case 4:
                 for (String line : print(((Link) component).child, linkCounter))
                     if (!line.equals("")) content.add(linkCounter.get() + ") " + line);
@@ -83,10 +84,10 @@ class EvaluatedDOM extends AbstractDOM<String, Component, AbstractComponentConta
                     content.addAll(findLinks(c, linkCounter));
                 return content;
             case 3:
-                return List.of();
+                return Arrays.asList();
             case 4:
                 String output = String.join("", print(((Link) component).child, linkCounter));
-                return output.equals("") ? List.of() : List.of(new SimpleLink(linkCounter.get().toString(), ((Link) component).target.parts, output));
+                return output.equals("") ? Arrays.asList() : Arrays.asList(new SimpleLink(linkCounter.get().toString(), ((Link) component).target.parts, output));
         }
         throw new Error("Unknown node: " + component);
     }

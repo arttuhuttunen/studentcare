@@ -11,10 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -124,7 +121,7 @@ public class AppLogic {
     }
 
     private Supplier<Integer> linkIndexer() {
-        return new Supplier<>() {
+        return new Supplier<Integer>() {
             int i = 1;
 
             @Override
@@ -139,7 +136,7 @@ public class AppLogic {
         if (!session.active())
             return false;
 
-        session.navigate(List.of(activeMenuName));
+        session.navigate(Arrays.asList(activeMenuName));
 
         while (true) {
             System.out.println("Entering menu " + session.route());

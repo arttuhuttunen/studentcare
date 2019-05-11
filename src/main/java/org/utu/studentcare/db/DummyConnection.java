@@ -5,6 +5,8 @@ import org.utu.studentcare.applogic.ExerciseSpecs;
 import org.utu.studentcare.db.orm.*;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,12 +55,14 @@ class DummyConnection implements SQLConnection {
     public <T> List<T> findAll(SQLFunction<ResultSet, T> mapping, String statement, Object... data) throws AppLogicException {
         ExerciseSpecs specs = ExerciseSpecs.generateFrom(rule);
         if (statement.contains("from 'exercises'")) {
-            return List.of(
+            return Arrays.asList(
                     (T) (new Exercise(0, "dummy", "dummy", "dummy", "2019-01-02", 0, "dummy", "dummy", 0.0, "", Optional.of(specs.getExerciseDecls().get(0)))),
                     (T) (new Exercise(0, "dummy", "dummyb", "dummy", "2019-01-02", 1, "dummy", "dummy", 2.0, "2019-01-02", Optional.of(specs.getExerciseDecls().get(1))))
             );
         }
-        return findFirst(mapping, statement, data).stream().collect(Collectors.toList());
+        ArrayList<T> ret = new ArrayList<>();
+        findFirst(mapping, statement, data).ifPresent(v -> ret.add(v));
+        return ret;
     }
 
     @Override

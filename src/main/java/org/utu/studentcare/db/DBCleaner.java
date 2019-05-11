@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -159,6 +160,7 @@ public class DBCleaner extends TaskStuff {
                 taskUpdate();
             }
         }
+
         taskFinished("Populating the courseinstances table");
 
         int studentCount = 10000;
@@ -174,7 +176,7 @@ public class DBCleaner extends TaskStuff {
 
         taskStarted("Joining courses", 1);
         {
-            CourseInstance instance = CourseInstance.findI(connection, "DTEK1049", "2019").orElseThrow();
+            CourseInstance instance = CourseInstance.findI(connection, "DTEK1049", "2019").orElseGet(() -> { throw new NoSuchElementException("No course instance present"); });
             instance = instance.setGrading(
                     "{" +
                             "DEF harjaa[0..2]: \"viikkoharjoitukset a1-2\"," +

@@ -4,6 +4,7 @@ import org.utu.studentcare.applogic.AppLogicException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -88,7 +89,7 @@ public abstract class AbstractDOM<Y, X, Z> {
         final List<Y> parts;
 
         public LinkParts() {
-            this(List.of());
+            this(Arrays.asList());
         }
 
         LinkParts(Collection<Y> source) {

@@ -106,7 +106,7 @@ fork in Global := true
 
 //// JAVAFX configuration
 
-val javafx_versions = force_javaFxVersion getOrElse (javaVersionNum match {
+val javafx_versions = (force_javaFxVersion getOrElse javaVersionNum) match {
   case 7 => (7, "7", "8.0.181-R13")
   case 8 => (8, "8", "8.0.181-R13")
   case 10 | 11 => (11, "11.0.2", "11-R16")
@@ -114,7 +114,7 @@ val javafx_versions = force_javaFxVersion getOrElse (javaVersionNum match {
   case 13 => (12, "12", "11-R16")
   case ver if force_javaFxVersion.isEmpty => fail("The JavaFX version ["+ver+"] derived from your Java SDK version ["+javaVersionString+"] is not supported. Try using 7/8/10/11/12 instead.")
   case ver => fail("The JavaFX version you had defined ["+ver+"] is not supported. Try using 7/8/10/11/12 instead.")
-})
+}
 
 val jfx_sdk_version = javafx_versions._2
 val jfx_scalafx_version = javafx_versions._3

@@ -1,12 +1,13 @@
 package org.utu.studentcare.db.orm;
 
-import org.utu.studentcare.db.SQLConnection;
 import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.ExerciseSpecs;
+import org.utu.studentcare.db.SQLConnection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -77,7 +78,7 @@ public class CourseInstance extends Course {
         String courseId = resultSet.getString("courseId");
         String gradingRule = resultSet.getString("gradingRule");
 
-        Course c = Course.find(connection, courseId).orElseThrow();
+        Course c = Course.find(connection, courseId).orElseGet(() -> { throw new NoSuchElementException("No course instance present"); });
         return new CourseInstance(c, instanceId, gradingRule);
     }
 

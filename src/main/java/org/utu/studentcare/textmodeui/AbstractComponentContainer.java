@@ -1,6 +1,7 @@
 package org.utu.studentcare.textmodeui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,6 +20,6 @@ abstract class AbstractComponentContainer<X extends AbstractComponentContainer> 
     }
 
     AbstractComponentContainer() {
-        this(List.of());
+        this(Arrays.asList());
     }
 }
