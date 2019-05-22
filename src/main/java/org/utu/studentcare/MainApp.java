@@ -1,5 +1,7 @@
 package org.utu.studentcare;
 
+import com.MyVaadinApplication;
+import com.vaadin.server.VaadinRequest;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -52,17 +54,18 @@ public class MainApp extends Application {
      */
     private void startGraphicalUI(Stage stage) {
         // TODO: toteuta!
+
     }
 
     @Override
     public void start(Stage stage) {
         // TODO: vaihda kun teet graafista käyttöliittymää
-        boolean textMode = true;
+        boolean textMode = false;
 
         if (textMode)
             startTextModeUI(stage);
         else
-            startGraphicalUI(stage);
+            startGraphicalUI(null);
     }
 
     /**
