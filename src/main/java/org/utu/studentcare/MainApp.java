@@ -1,7 +1,5 @@
 package org.utu.studentcare;
 
-import com.MyVaadinApplication;
-import com.vaadin.server.VaadinRequest;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
