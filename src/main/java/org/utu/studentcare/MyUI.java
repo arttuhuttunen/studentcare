@@ -46,6 +46,9 @@ public class MyUI extends UI {
 
 
         LoginForm loginForm = new LoginForm();
+        loginForm.setUsernameCaption("Käyttäjätunnus");
+        loginForm.setPasswordCaption("Salasana");
+        loginForm.setLoginButtonCaption("Kirjaudu sisään");
         loginForm.addLoginListener(new LoginForm.LoginListener() {
             @Override
             public void onLogin(LoginForm.LoginEvent loginEvent) {
@@ -73,8 +76,14 @@ public class MyUI extends UI {
     public static class MyUIServlet extends VaadinServlet {
     }
 
-    protected void initSQL() {
+    /**Method for checking whether user with given username and password exists
+     * If user does exist, pass auth values to mainView (WIP)
+     * Currently return value is boolean, in future might be Stringlist etc.
+     */
 
+    private boolean loginControl(SQLConnection sqlConnection ,String username, String password) throws SQLException, AppLogicException {
+        if (Student.authenticate(sqlConnection, username, password).equals("Optional.empty")) {
+            return false;
+        } else {return true;}
     }
-
 }
