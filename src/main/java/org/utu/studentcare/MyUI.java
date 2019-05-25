@@ -46,19 +46,21 @@ public class MyUI extends UI {
 
 
         LoginForm loginForm = new LoginForm();
-        loginForm.addLoginListener(e -> {String username = e.getLoginParameter("username"); String password = e.getLoginParameter("password");});
+        loginForm.addLoginListener(new LoginForm.LoginListener() {
+            @Override
+            public void onLogin(LoginForm.LoginEvent loginEvent) {
+                String uname = loginEvent.getLoginParameter("username");
+                String pword = loginEvent.getLoginParameter("password");
+                try {
+                    SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
+                    String authTest = Student.authenticate(connection, uname, pword).toString();
+                    layout.addComponent(new Label("DEBUG; authTest returns: " + authTest));
+                } catch (Exception e) {e.printStackTrace();}
+            }
+        });
 
-        try {
-            SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
-            String authTest =  Student.authenticate(connection, loginForm.getUsernameCaption(), loginForm.getPasswordCaption()).toString();
-            layout.addComponent(new Label("DEBUG; authTest returns: " + authTest));
-            JavaScript.getCurrent().execute("window.alert('This is popup'");
-            JavaScript.getCurrent().execute("window.alert('DEBUG; authTest returns:" + authTest + "');");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        JavaScript.getCurrent().execute("window.alert('This is popup'");
         layout.addComponents(loginForm);
 
         setContent(layout);
