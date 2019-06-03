@@ -1,21 +1,23 @@
 package org.utu.studentcare;
 
 import com.vaadin.navigator.View;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.utu.studentcare.applogic.Session;
 import org.utu.studentcare.db.orm.Student;
 
 import java.util.Optional;
 
-public class MainView extends HorizontalLayout implements View {
+public class MainView extends VerticalLayout {
     public MainView(MyUI ui, SessionAuthentication authentication) {
-        final VerticalLayout layout = new VerticalLayout();
-        layout.addComponent(new Label("Login successful, welcome " + authentication.getStudent().toString()));
+
+
+        setStyleName("main-screen");
+
+        addComponent(new Label("Login successful, welcome " + authentication.getStudent().toString()));
         TextField textField = new TextField("textfield");
+        addComponents(textField);
         textField.setValue("you passed login screen");
-        layout.addComponent(textField);
+        ui.setContent(this);
+        System.out.println("Test123");
     }
 }

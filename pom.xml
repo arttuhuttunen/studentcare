@@ -50,6 +50,12 @@
             <version>1.4.1</version>
             <scope>test</scope>
         </dependency>
+		<!-- https://mvnrepository.com/artifact/org.webjars.npm/workbox-sw -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>workbox-sw</artifactId>
+			<version>4.2.0</version>
+		</dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>

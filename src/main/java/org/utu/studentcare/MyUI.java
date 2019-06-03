@@ -30,6 +30,7 @@ import java.util.Optional;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+    Navigator navigator;
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
@@ -43,7 +44,7 @@ public class MyUI extends UI {
                     + ", it works!"));
         });*/
         SessionAuthentication authentication = new SessionAuthentication();
-        Navigator navigator = new Navigator(this, this);
+        //navigator = new Navigator(this, this);
 
         if (!authentication.isUserSignedIn()) {
 
@@ -62,9 +63,10 @@ public class MyUI extends UI {
                             SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
                             String authTest = Student.authenticate(connection, uname, pword).toString();
                             if (authentication.loginControl(connection, uname, pword)) {
-                                setContent(new MainView(MyUI.this, authentication));
                                 MainView mw = new MainView(MyUI.this, authentication);
-                                navigator.addView("MainView", mw);
+                                setContent(mw);
+                                //MainView mw = new MainView(MyUI.this, authentication);
+                                //navigator.addView("", mw);
                             }
                         } catch (Exception e) {e.printStackTrace();}
 
@@ -94,6 +96,7 @@ public class MyUI extends UI {
         TextField textField = new TextField("textfield");
         textField.setValue("you passed login screen");
         layout.addComponent(textField);
+        setContent(layout);
     }
 
     public static MyUI get() {
