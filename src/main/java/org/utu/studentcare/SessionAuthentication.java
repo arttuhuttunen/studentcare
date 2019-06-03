@@ -10,12 +10,14 @@ import java.util.Optional;
 public class SessionAuthentication {
 
     private Optional<Student> student;
+    private Optional<Student> isTeacher;
 
     public boolean loginControl(SQLConnection sqlConnection , String username, String password) throws SQLException, AppLogicException {
         if (Student.authenticate(sqlConnection, username, password).equals(Optional.empty())) {
             return false;
         } else {
             student = Student.authenticate(sqlConnection, username, password);
+
             return true;}
     }
 
