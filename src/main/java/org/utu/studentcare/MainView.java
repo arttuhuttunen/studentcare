@@ -1,5 +1,6 @@
 package org.utu.studentcare;
 
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 import org.utu.studentcare.applogic.Session;
@@ -11,6 +12,8 @@ public class MainView extends VerticalLayout {
     MenuBar menuBar = new MenuBar();
     public MainView(MyUI ui, SessionAuthentication authentication) {
 
+        CssLayout viewContainer = new CssLayout();
+        final Navigator navigator = new Navigator(ui, viewContainer);
 
         addComponent(menuBar);
         MenuBar.MenuItem joinCourses = menuBar.addItem("Liity kursseille", null, null);
@@ -20,21 +23,21 @@ public class MainView extends VerticalLayout {
 
         authentication.getStudent().filter(student -> student.isTeacher).ifPresent(student -> {
             addTeacherButtons();
-                });
+        });
 
         authentication.getStudent().filter(student -> student.isAdmin).ifPresent(student -> {
             addAdminButtons();
         });
-        setStyleName("main-screen");
+        //setStyleName("main-screen");
 
 
 
         addComponent(new Label("Login successful, welcome " + authentication.getStudent().toString()));
-        TextField textField = new TextField("textfield");
-        addComponents(textField);
-        textField.setValue("you passed login screen");
+
+        addComponent(viewContainer);
+
         ui.setContent(this);
-        System.out.println("Test123");
+
     }
     private void addTeacherButtons() {
         MenuBar.MenuItem teachCourses = menuBar.addItem("Opeta kursseja", null, null);
