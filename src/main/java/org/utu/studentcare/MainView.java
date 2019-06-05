@@ -1,25 +1,25 @@
 package org.utu.studentcare;
 
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
-import org.utu.studentcare.applogic.Session;
-import org.utu.studentcare.db.orm.Student;
-
-import java.util.Optional;
 
 public class MainView extends VerticalLayout {
     MenuBar menuBar = new MenuBar();
+    Navigator navigator;
     public MainView(MyUI ui, SessionAuthentication authentication) {
 
-        CssLayout viewContainer = new CssLayout();
-        final Navigator navigator = new Navigator(ui, viewContainer);
+        HorizontalLayout viewContainer = new HorizontalLayout();
+        navigator = new Navigator(ui, viewContainer);
+
+        navigator.addView("JoinCourses", new JoinCourses());
+        navigator.addView("StudentCourses", new StudentCourses());
+        navigator.addView("TeachCourses", new TeachCourses());
+
 
         addComponent(menuBar);
-        MenuBar.MenuItem joinCourses = menuBar.addItem("Liity kursseille", null, null);
-        MenuBar.MenuItem studentCourses = menuBar.addItem("Omat kurssisi", null, null);
+        MenuBar.MenuItem joinCourses = menuBar.addItem("Liity kursseille", (menuItem -> getUI().getNavigator().navigateTo("JoinCourses")));
+        MenuBar.MenuItem studentCourses = menuBar.addItem("Omat kurssisi", (menuItem -> getUI().getNavigator().navigateTo("StudentCourses")));
 
-        addComponent(new Label("DEBUG: toString of isTecher returns: " + authentication.getStudent().filter(student -> student.isTeacher).toString()));
 
         authentication.getStudent().filter(student -> student.isTeacher).ifPresent(student -> {
             addTeacherButtons();
@@ -30,22 +30,22 @@ public class MainView extends VerticalLayout {
         });
         //setStyleName("main-screen");
 
-
-
-        addComponent(new Label("Login successful, welcome " + authentication.getStudent().toString()));
-
         addComponent(viewContainer);
 
         ui.setContent(this);
 
     }
     private void addTeacherButtons() {
-        MenuBar.MenuItem teachCourses = menuBar.addItem("Opeta kursseja", null, null);
-        MenuBar.MenuItem gradeCourses = menuBar.addItem("Arvioi kurssisuorituksia", null, null);
+        navigator.addView("TeachCourses", new TeachCourses());
+        MenuBar.MenuItem teachCourses = menuBar.addItem("Opeta kursseja", (menuItem -> getUI().getNavigator().navigateTo("TeachCourses")));
+        navigator.addView("GradeCourses", new GradeCourses());
+        MenuBar.MenuItem gradeCourses = menuBar.addItem("Arvioi kurssisuorituksia", (menuItem -> getUI().getNavigator().navigateTo("GradeCourses")));
     }
     private void addAdminButtons() {
-        MenuBar.MenuItem approveCourses = menuBar.addItem("Suoritusten hyväksyminen", null, null);
-        MenuBar.MenuItem dbControl = menuBar.addItem("Tietokannan hallinta", null, null);
+        navigator.addView("ApproveCourses", new ApproveCourses());
+        MenuBar.MenuItem approveCourses = menuBar.addItem("Suoritusten hyväksyminen", (menuItem -> getUI().getNavigator().navigateTo("ApproveCourses")));
+        navigator.addView("DbControl", new DbControl());
+        MenuBar.MenuItem dbControl = menuBar.addItem("Tietokannan hallinta", (menuItem -> getUI().getNavigator().navigateTo("DbControl")));
     }
 
 }

@@ -76,6 +76,7 @@ public class MyUI extends UI {
 
             JavaScript.getCurrent().execute("window.alert('This is popup'");
             layout.addComponents(loginForm);
+            layout.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
             setContent(layout);
         } else {
