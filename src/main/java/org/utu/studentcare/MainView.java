@@ -30,6 +30,9 @@ public class MainView extends VerticalLayout {
         });
         //setStyleName("main-screen");
 
+        addComponent(new Label("Tervetuloa Studentcare-järjestelmään " + authentication.getStudent().get().firstNames
+                + " " +  authentication.getStudent().get().familyName));
+
         addComponent(viewContainer);
 
         ui.setContent(this);
