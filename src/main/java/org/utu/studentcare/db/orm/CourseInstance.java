@@ -4,6 +4,7 @@ import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.ExerciseSpecs;
 import org.utu.studentcare.db.SQLConnection;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

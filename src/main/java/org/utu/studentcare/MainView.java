@@ -12,7 +12,9 @@ public class MainView extends VerticalLayout {
         navigator = new Navigator(ui, viewContainer);
 
         navigator.addView("JoinCourses", new JoinCourses());
-        navigator.addView("StudentCourses", new StudentCourses());
+        try {
+            navigator.addView("StudentCourses", new StudentCourses(authentication));
+        } catch (Exception e) {e.printStackTrace();}
         navigator.addView("TeachCourses", new TeachCourses());
 
 
