@@ -1,9 +1,9 @@
 package org.utu.studentcare;
 
+import com.vaadin.data.Binder;
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
+import com.vaadin.ui.renderers.ButtonRenderer;
 import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.ExerciseSpec;
 import org.utu.studentcare.db.orm.CourseInstance;
@@ -21,7 +21,20 @@ public class CourseView extends HorizontalLayout implements View {
         Student opt = authentication.getStudent().get();
         List<ExerciseSpec> exercises = courseInstance.exerciseSpecs().getExerciseDecls();
         exercisesGrid.setItems(exercises);
-        exercisesGrid.addColumn(ExerciseSpec::getDescription).setCaption("Harjoitukset");
+        exercisesGrid.addColumn(ExerciseSpec::getDescription).setCaption("Harjoituksen nimi");
+        exercisesGrid.addColumn(ExerciseSpec::getRange).setCaption("Pistemäärä");
+        exercisesGrid.addColumn(exercise -> "Siirry harjoitukseen",
+            new ButtonRenderer(clickevent -> {
+                try {
+                    getUI().getNavigator().addView("ExerciseView", new ExerciseView(authentication, (ExerciseSpec)clickevent.getItem(), courseInstance));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (AppLogicException e) {
+                    e.printStackTrace();
+                }
+                getUI().getNavigator().navigateTo("ExerciseView");
+            })
+        );
         addComponent(exercisesGrid);
     }
 }
