@@ -47,6 +47,8 @@ public class StudentCourses extends HorizontalLayout implements View {
                         e.printStackTrace();
                     }
                 }));
+        //courseGrid.setWidth("100%");
+        //courseGrid.setHeight("100%");
         addComponent(courseGrid);
     }
 }
