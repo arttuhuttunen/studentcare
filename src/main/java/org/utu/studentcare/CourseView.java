@@ -10,6 +10,7 @@ import org.utu.studentcare.db.orm.CourseInstance;
 import org.utu.studentcare.db.orm.Exercise;
 import org.utu.studentcare.db.orm.Exercises;
 import org.utu.studentcare.db.orm.Student;
+import scala.App;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,6 +23,16 @@ public class CourseView extends HorizontalLayout implements View {
         List<ExerciseSpec> exercises = courseInstance.exerciseSpecs().getExerciseDecls();
         exercisesGrid.setItems(exercises);
         exercisesGrid.addColumn(ExerciseSpec::getDescription).setCaption("Harjoituksen nimi");
+        exercisesGrid.addColumn(status -> {
+            try {
+                return authentication.getStudent().get().exercises(authentication.getConnection(), courseInstance.instanceId).status();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (AppLogicException e) {
+                e.printStackTrace();
+            }
+            return new AppLogicException("Virhe taulukon luomisessa");
+        }).setCaption("Suorituksen tilanne");
         exercisesGrid.addColumn(ExerciseSpec::getRange).setCaption("Pistemäärä");
         exercisesGrid.addColumn(exercise -> "Siirry harjoitukseen",
             new ButtonRenderer(clickevent -> {

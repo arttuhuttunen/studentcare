@@ -1,10 +1,8 @@
 package org.utu.studentcare;
 
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextArea;
+import com.vaadin.server.Page;
+import com.vaadin.ui.*;
 import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.ExerciseSpec;
 import org.utu.studentcare.applogic.Session;
@@ -14,20 +12,42 @@ import org.utu.studentcare.db.orm.Exercise;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class ExerciseView extends HorizontalLayout implements View {
+public class ExerciseView extends VerticalLayout implements View {
     public ExerciseView(SessionAuthentication authentication, ExerciseSpec exerciseSpec, CourseInstance courseInstance) throws SQLException, AppLogicException {
+        int studentID = authentication.getStudent().get().id;
+        Exercise exercise = new Exercise(studentID, courseInstance.instanceId, exerciseSpec.getId(), exerciseSpec);
+        Optional<Exercise> searchParams = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId());
+
         addComponent(new Label("Harjoituksen " + exerciseSpec.getDescription() + " palautuslomake"));
-        TextArea exerciseAnswer = new TextArea("Vastaua tehtävään");
+        TextArea exerciseAnswer = new TextArea("Vastaus tehtävään");
         TextArea exerciseComment = new TextArea("Vapaavalintainen kommentti");
         Button submitButton = new Button("Palauta tehtävä");
         Button cancelButton = new Button("Peruuta");
 
-        int studentID = authentication.getStudent().get().id;
-        Exercise exercise = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId()).orElseThrow(() -> new AppLogicException("Harjoitusta ei löytynyt"));
+        if (searchParams.isPresent()) {
+            addComponent(new Label("Tehtävä palautettu " + searchParams.get().uploadDate));
+            if (!searchParams.get().gradeDate.isEmpty()) {
+                addComponent(new Label("Arvosteltu " + searchParams.get().gradeDate + ", Arvosana: " + searchParams.get().grade));
+            }
+            if (!searchParams.get().teacherComment.isEmpty()) {
+                addComponent(new Label("Opettajan kommentti: " + searchParams.get().teacherComment));
+            }
+            exerciseAnswer.setValue(searchParams.get().uploadResource);
+            exerciseComment.setValue(searchParams.get().comment);
+            submitButton.setEnabled(false);
+            exerciseAnswer.setEnabled(false);
+            exerciseComment.setEnabled(false);
+        }
+
         submitButton.addClickListener(clickEvent ->
                 {
                     try {
                         exercise.upload(authentication.getConnection(), exerciseAnswer.getValue(), exerciseComment.getValue());
+                        Notification.show("Tehtävän palaututettu onnistuneesti");
+                        Notification successNotification = new Notification("Tehtävä palautettu onnistuneesti");
+                        successNotification.setDelayMsec(5000);
+                        successNotification.show(Page.getCurrent());
+                        getUI().getNavigator().navigateTo("CourseView");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     } catch (AppLogicException e) {
@@ -35,8 +55,10 @@ public class ExerciseView extends HorizontalLayout implements View {
                     }
                 }
         );
+        //Exercise exercise = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId()).orElseThrow(() -> new AppLogicException("Harjoitusta ei löytynyt"));
 
         cancelButton.addClickListener(clickEvent ->
                 getUI().getNavigator().navigateTo("CourseView"));
+        addComponents(exerciseAnswer,exerciseComment, submitButton, cancelButton);
     }
 }
