@@ -32,10 +32,7 @@ public class StudentCourses extends HorizontalLayout implements View {
         /*courseGrid.addColumn( course -> (course.wholeNameId(40); tempObject = course), new ButtonRenderer(clickevent -> {
             navigator.navigateTo("CourseView", navigator.addView(new CourseView(authentication.getConnection(), ));
         })).setCaption("Kurssin nimi");*/
-        courseGrid.addColumn(courseInstance -> {
-            //courseInstance.wholeNameId(40);
-            return courseInstance.wholeNameId(40);
-        }).setCaption("Kurssin nimi");
+        courseGrid.addColumn(courseInstance -> courseInstance.wholeNameId(40)).setCaption("Kurssin nimi");
         courseGrid.addColumn(course -> "Näytä kurssin tiedot",
                 new ButtonRenderer(clickevent -> {
                     try {

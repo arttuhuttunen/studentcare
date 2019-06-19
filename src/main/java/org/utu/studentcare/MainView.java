@@ -11,8 +11,8 @@ public class MainView extends VerticalLayout {
         HorizontalLayout viewContainer = new HorizontalLayout();
         navigator = new Navigator(ui, viewContainer);
 
-        navigator.addView("JoinCourses", new JoinCourses());
         try {
+            navigator.addView("JoinCourses", new JoinCourses(authentication));
             navigator.addView("StudentCourses", new StudentCourses(authentication));
         } catch (Exception e) {e.printStackTrace();}
         navigator.addView("TeachCourses", new TeachCourses());
