@@ -1,6 +1,7 @@
 package org.utu.studentcare;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
@@ -18,16 +19,18 @@ public class JoinCourses extends VerticalLayout implements View {
     Grid<CourseInstance> courseGrid = new Grid<>();
     List<CourseInstance> courses;
     SessionAuthentication authentication;
-    public JoinCourses(SessionAuthentication authentication) throws SQLException, AppLogicException {
+    public JoinCourses(SessionAuthentication authentication){
         addComponent(new Label("Kurssi-ilmo näkymä"));
-
         this.authentication = authentication;
-        //courseGrid.setItems(courses);
-        /*courseGrid.addColumn(courseInstance -> courseInstance.wholeNameId(40)).setCaption("Kurssin nimi").setId("courseName");
-        courseGrid.sort("courseName" ,SortDirection.ASCENDING);*/
-        loadColumns();
-
         addComponents(courseGrid);
+    }
+
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        try {
+            loadColumns();
+        } catch (SQLException | AppLogicException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadColumns() throws SQLException, AppLogicException {
@@ -44,7 +47,7 @@ public class JoinCourses extends VerticalLayout implements View {
                         }
                         else {
                             courseGrid.removeAllColumns();
-                            loadColumns(); //This recursive call is for reloading all rows after successful course joining
+                            loadColumns(); //This itself call is for reloading all rows after successful course joining
                             Notification.show("Liitytty kurssille " + clickevent.getItem().wholeNameId(10) + " onnistuneesti!").setDelayMsec(3000);
                         }
 
