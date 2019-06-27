@@ -42,13 +42,13 @@ public class JoinCourses extends VerticalLayout implements View {
         courseGrid.addColumn(join -> "Liity kurssille",
                 new ButtonRenderer<>(clickevent -> {
                     try {
-                        if (!opt.joinCourse(authentication.getConnection(), CourseInstance.findI(authentication.getConnection(), clickevent.getItem().instanceId).get())) {
-                            Notification.show("VIRHE: Liittyminen epäonnistui, yritä myöhemmin uudestaan", Notification.Type.WARNING_MESSAGE);
-                        }
-                        else {
+                        if (opt.joinCourse(authentication.getConnection(), CourseInstance.findI(authentication.getConnection(), clickevent.getItem().instanceId).get())) {
                             courseGrid.removeAllColumns();
                             loadColumns(); //This itself call is for reloading all rows after successful course joining
                             Notification.show("Liitytty kurssille " + clickevent.getItem().wholeNameId(10) + " onnistuneesti!").setDelayMsec(3000);
+                        }
+                        else {
+                            Notification.show("VIRHE: Liittyminen epäonnistui, yritä myöhemmin uudestaan", Notification.Type.WARNING_MESSAGE);
                         }
 
                     } catch (SQLException | AppLogicException e) {

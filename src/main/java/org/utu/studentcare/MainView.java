@@ -6,7 +6,9 @@ import com.vaadin.ui.*;
 public class MainView extends VerticalLayout {
     MenuBar menuBar = new MenuBar();
     Navigator navigator;
+    SessionAuthentication authentication;
     public MainView(MyUI ui, SessionAuthentication authentication) {
+        this.authentication = authentication;
 
         HorizontalLayout viewContainer = new HorizontalLayout();
         navigator = new Navigator(ui, viewContainer);
@@ -15,7 +17,6 @@ public class MainView extends VerticalLayout {
             navigator.addView("JoinCourses", new JoinCourses(authentication));
             navigator.addView("StudentCourses", new StudentCourses(authentication));
         } catch (Exception e) {e.printStackTrace();}
-        navigator.addView("TeachCourses", new TeachCourses());
 
 
         addComponent(menuBar);
@@ -41,9 +42,9 @@ public class MainView extends VerticalLayout {
 
     }
     private void addTeacherButtons() {
-        navigator.addView("TeachCourses", new TeachCourses());
+        navigator.addView("TeachCourses", new TeachCourses(authentication));
         MenuBar.MenuItem teachCourses = menuBar.addItem("Opeta kursseja", (menuItem -> getUI().getNavigator().navigateTo("TeachCourses")));
-        navigator.addView("GradeCourses", new GradeCourses());
+        navigator.addView("GradeCourses", new GradeCourses(authentication));
         MenuBar.MenuItem gradeCourses = menuBar.addItem("Arvioi kurssisuorituksia", (menuItem -> getUI().getNavigator().navigateTo("GradeCourses")));
     }
     private void addAdminButtons() {

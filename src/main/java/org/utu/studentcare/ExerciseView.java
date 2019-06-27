@@ -43,14 +43,11 @@ public class ExerciseView extends VerticalLayout implements View {
                 {
                     try {
                         exercise.upload(authentication.getConnection(), exerciseAnswer.getValue(), exerciseComment.getValue());
-                        Notification.show("Tehtävän palaututettu onnistuneesti");
                         Notification successNotification = new Notification("Tehtävä palautettu onnistuneesti");
                         successNotification.setDelayMsec(5000);
                         successNotification.show(Page.getCurrent());
                         getUI().getNavigator().navigateTo("CourseView");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (AppLogicException e) {
+                    } catch (SQLException | AppLogicException e) {
                         e.printStackTrace();
                     }
                 }
