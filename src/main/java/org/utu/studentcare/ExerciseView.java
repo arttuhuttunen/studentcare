@@ -31,15 +31,14 @@ public class ExerciseView extends VerticalLayout implements View {
             addComponent(new Label("Tehtävä palautettu " + searchParams.get().uploadDate));
             if (!searchParams.get().gradeDate.isEmpty()) {
                 addComponent(new Label("Arvosteltu " + searchParams.get().gradeDate + ", Arvosana: " + searchParams.get().grade));
-            }
-            if (!searchParams.get().teacherComment.isEmpty()) {
                 addComponent(new Label("Opettajan kommentti: " + searchParams.get().teacherComment));
+                submitButton.setEnabled(false);
+                exerciseAnswer.setEnabled(false);
+                exerciseComment.setEnabled(false);
             }
+
             exerciseAnswer.setValue(searchParams.get().uploadResource);
             exerciseComment.setValue(searchParams.get().comment);
-            submitButton.setEnabled(false);
-            exerciseAnswer.setEnabled(false);
-            exerciseComment.setEnabled(false);
         }
 
         submitButton.addClickListener(clickEvent ->
