@@ -26,7 +26,7 @@ public class ExerciseView extends VerticalLayout implements View {
 
 
         /*This if-statement locks exercise to accept only one submission by making TextArea uneditable and disabling submit-button
-        * That results in grey textfield and submit-button, which hopefully gives user a feeling of submit immutability*/
+        * That results in grey textfield and submit-button, which (hopefully) gives user a feeling of submit immutability*/
         if (searchParams.isPresent()) {
             addComponent(new Label("Tehtävä palautettu " + searchParams.get().uploadDate));
             if (!searchParams.get().gradeDate.isEmpty()) {
