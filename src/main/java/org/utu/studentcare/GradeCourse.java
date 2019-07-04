@@ -50,7 +50,7 @@ public class GradeCourse extends VerticalLayout implements View {
             }
             return Notification.show("VIRHE: Opiskelijataulukon luonti epäonnistui, yritä myöhemmin uudestaan", Notification.Type.WARNING_MESSAGE);
         }).setCaption("Tehtävien tilanne");
-        studentGrid.addColumn(student -> "Oppilaan tehtävät",
+        studentGrid.addColumn(student -> "Opiskelijan tehtävät",
             new ButtonRenderer(clickevent -> {
                 getUI().getNavigator().addView("GradeCourseStudent", new GradeCourseStudent(authentication, (Student)clickevent.getItem(), courseInstance));
                 getUI().getNavigator().navigateTo("GradeCourseStudent");

@@ -48,7 +48,7 @@ public class JoinCourses extends VerticalLayout implements View {
                         if (opt.joinCourse(authentication.getConnection(), CourseInstance.findI(authentication.getConnection(), clickevent.getItem().instanceId).get())) {
                             courseGrid.removeAllColumns();
                             loadColumns(); //This itself call is for reloading all rows after successful course joining
-                            Notification.show("Liitytty kurssille " + clickevent.getItem().wholeNameId(10) + " onnistuneesti!").setDelayMsec(3000);
+                            Notification.show("Liitytty kurssille " + clickevent.getItem().wholeNameId(40) + " onnistuneesti!").setDelayMsec(3000);
                         }
                         else {
                             Notification.show("VIRHE: Liittyminen epäonnistui, yritä myöhemmin uudestaan", Notification.Type.WARNING_MESSAGE);
