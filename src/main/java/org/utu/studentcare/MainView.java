@@ -2,6 +2,7 @@ package org.utu.studentcare;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import org.utu.studentcare.applogic.AppLogicException;
 
@@ -39,7 +40,18 @@ public class MainView extends VerticalLayout {
         authentication.getStudent().filter(student -> student.isAdmin).ifPresent(student -> {
             addAdminButtons();
         });
-        //setStyleName("main-screen");
+
+        menuBar.addItem("Kirjaudu ulos", (menuItem -> {
+            try {
+                if (authentication.logOut()) {
+                    getUI().close();
+                    JavaScript.getCurrent().execute("location.reload()");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
+
 
         addComponent(new Label("Tervetuloa Studentcare-järjestelmään " + authentication.getStudent().get().firstNames
                 + " " +  authentication.getStudent().get().familyName));
