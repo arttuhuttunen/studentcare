@@ -70,7 +70,7 @@ public class MainView extends VerticalLayout {
     private void addAdminButtons() {
         navigator.addView("ApproveCourses", new ApproveCourses(authentication));
         MenuBar.MenuItem approveCourses = menuBar.addItem("Suoritusten hyväksyminen", (menuItem -> getUI().getNavigator().navigateTo("ApproveCourses")));
-        navigator.addView("DbControl", new DbControl());
+        navigator.addView("DbControl", new DbControl(authentication));
         MenuBar.MenuItem dbControl = menuBar.addItem("Tietokannan hallinta", (menuItem -> getUI().getNavigator().navigateTo("DbControl")));
     }
 
