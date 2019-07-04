@@ -2,6 +2,7 @@ package org.utu.studentcare;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -28,23 +29,15 @@ import java.util.Optional;
  * overridden to add component to the user interface and initialize non-component functionality.
  */
 @Theme("mytheme")
+@PreserveOnRefresh
 public class MyUI extends UI {
 
     Navigator navigator;
+    SessionAuthentication authentication = new SessionAuthentication();
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-
-        /* final TextField name = new TextField();
-        name.setCaption("Type your name here:");
-
-        Button button = new Button("Click Me");
-        button.addClickListener(e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue()
-                    + ", it works!"));
-        });*/
-        SessionAuthentication authentication = new SessionAuthentication();
-        //navigator = new Navigator(this, this);
 
         if (!authentication.isUserSignedIn()) {
 
@@ -53,51 +46,44 @@ public class MyUI extends UI {
             loginForm.setUsernameCaption("Käyttäjätunnus");
             loginForm.setPasswordCaption("Salasana");
             loginForm.setLoginButtonCaption("Kirjaudu sisään");
-            loginForm.addLoginListener(new LoginForm.LoginListener() {
-                @Override
-                public void onLogin(LoginForm.LoginEvent loginEvent) {
-                    String uname = loginEvent.getLoginParameter("username");
-                    String pword = loginEvent.getLoginParameter("password");
+            loginForm.addLoginListener((LoginForm.LoginListener) loginEvent -> {
+                String uname = loginEvent.getLoginParameter("username");
+                String pword = loginEvent.getLoginParameter("password");
 
-                        try {
-                            SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
-                            String authTest = Student.authenticate(connection, uname, pword).toString();
-                            if (authentication.loginControl(connection, uname, pword)) {
-                                MainView mw = new MainView(MyUI.this, authentication);
-                                setContent(mw);
-                                //MainView mw = new MainView(MyUI.this, authentication);
-                                //navigator.addView("", mw);
-                            }
-                        } catch (Exception e) {e.printStackTrace();}
+                    try {
+                        SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
+                        String authTest = Student.authenticate(connection, uname, pword).toString();
+                        if (authentication.loginControl(connection, uname, pword)) {
+                            MainView mw = new MainView(MyUI.this, authentication);
+                            setContent(mw);
+                            //MainView mw = new MainView(MyUI.this, authentication);
+                            //navigator.addView("", mw);
+                        }
+                    } catch (Exception e) {e.printStackTrace();}
 
-                }
             });
 
 
-            JavaScript.getCurrent().execute("window.alert('This is popup'");
             layout.addComponents(loginForm);
             layout.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
             setContent(layout);
         } else {
-            mainView();
+            MainView mw = null;
+            try {
+                mw = new MainView(MyUI.this, authentication);
+            } catch (AppLogicException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            setContent(mw);
 
         }
-
-
-
-
-
-
     }
 
-    protected void mainView(){
-
-        final VerticalLayout layout = new VerticalLayout();
-        TextField textField = new TextField("textfield");
-        textField.setValue("you passed login screen");
-        layout.addComponent(textField);
-        setContent(layout);
+    @Override
+    protected void refresh(VaadinRequest request) {
     }
 
     public static MyUI get() {
@@ -107,16 +93,5 @@ public class MyUI extends UI {
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
-    }
-
-    /**Method for checking whether user with given username and password exists
-     * If user does exist, pass auth values to mainView (WIP)
-     * Currently return value is boolean, in future might be Stringlist etc.
-     */
-
-    private boolean loginControl(SQLConnection sqlConnection ,String username, String password) throws SQLException, AppLogicException {
-        if (Student.authenticate(sqlConnection, username, password).equals("Optional.empty")) {
-            return false;
-        } else {return true;}
     }
 }

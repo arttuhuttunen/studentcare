@@ -1,17 +1,25 @@
 package org.utu.studentcare;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.*;
+import org.utu.studentcare.applogic.AppLogicException;
+
+import java.sql.SQLException;
 
 public class MainView extends VerticalLayout {
     MenuBar menuBar = new MenuBar();
     Navigator navigator;
     SessionAuthentication authentication;
-    public MainView(MyUI ui, SessionAuthentication authentication) {
+
+    public MainView(MyUI ui, SessionAuthentication authentication) throws AppLogicException, SQLException {
         this.authentication = authentication;
 
         HorizontalLayout viewContainer = new HorizontalLayout();
         navigator = new Navigator(ui, viewContainer);
+
+        //If user reloads page for some reason while in mainview without any view open, it loads StudentCourses to dodge unknown state ('') error
+        navigator.addView("", new StudentCourses(authentication));
 
         try {
             navigator.addView("JoinCourses", new JoinCourses(authentication));

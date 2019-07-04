@@ -10,7 +10,6 @@ import java.util.Optional;
 public class SessionAuthentication {
 
     private Optional<Student> student;
-    private Optional<Student> isTeacher;
     private SQLConnection connection;
 
     public boolean loginControl(SQLConnection sqlConnection , String username, String password) throws SQLException, AppLogicException {
