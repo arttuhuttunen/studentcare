@@ -16,11 +16,13 @@ import java.util.List;
 import java.util.Set;
 
 public class JoinCourses extends VerticalLayout implements View {
-    Grid<CourseInstance> courseGrid = new Grid<>();
+    Grid<CourseInstance> courseGrid;
     List<CourseInstance> courses;
     SessionAuthentication authentication;
     public JoinCourses(SessionAuthentication authentication){
         addComponent(new Label("Kurssi-ilmo näkymä"));
+        courseGrid = new Grid<>();
+        courseGrid.setWidth("800");
         this.authentication = authentication;
         addComponents(courseGrid);
     }
@@ -34,6 +36,7 @@ public class JoinCourses extends VerticalLayout implements View {
     }
 
     private void loadColumns() throws SQLException, AppLogicException {
+        courseGrid.removeAllColumns();
         Student opt = authentication.getStudent().get();
         courses = opt.notAttending(authentication.getConnection());
         courseGrid.setItems(courses);

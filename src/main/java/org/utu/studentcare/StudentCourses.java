@@ -30,6 +30,7 @@ public class StudentCourses extends VerticalLayout implements View {
         Student opt = authentication.getStudent().get(); //Student opt is for shortening Optional parameters for better readability
         courseGrid.setWidthUndefined();
         courseGrid.setHeightUndefined();
+        courseGrid.setWidth("1200");
         addComponent(courseGrid);
     }
 
@@ -112,6 +113,5 @@ public class StudentCourses extends VerticalLayout implements View {
                     popupView.setContent(popUpContent);
                     popUpContent.setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
                 }));
-        courseGrid.setWidth("1000");
     }
 }
