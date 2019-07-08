@@ -18,6 +18,8 @@ import org.utu.studentcare.applogic.DBApp;
 import org.utu.studentcare.db.SQLConnection;
 import org.utu.studentcare.db.orm.*;
 
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -38,7 +40,6 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-
         if (!authentication.isUserSignedIn()) {
 
             final VerticalLayout layout = new VerticalLayout();
@@ -52,7 +53,6 @@ public class MyUI extends UI {
 
                     try {
                         SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
-                        String authTest = Student.authenticate(connection, uname, pword).toString();
                         if (authentication.loginControl(connection, uname, pword)) {
                             MainView mw = new MainView(MyUI.this, authentication);
                             setContent(mw);
@@ -72,9 +72,7 @@ public class MyUI extends UI {
             MainView mw = null;
             try {
                 mw = new MainView(MyUI.this, authentication);
-            } catch (AppLogicException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
+            } catch (AppLogicException | SQLException e) {
                 e.printStackTrace();
             }
             setContent(mw);

@@ -34,12 +34,18 @@ public class DbControl extends HorizontalLayout implements View {
 
             confirmBtn.addClickListener(clickEvent -> {
                 try {
-                    new DBCleaner(authentication.getConnection()).wipeTables().populateTables();
-                    authentication.logOut();
+                    DBCleaner dbCleaner = new DBCleaner(authentication.getConnection());
+                    System.out.println(dbCleaner.wipeTables().populateTables().debug());
+                    if (authentication.logOut()) {
+                        getUI().close();
+                        JavaScript.getCurrent().execute("location.reload()");
+                    } else {
+                        Notification.show("Virhe uloskirjautumisessa. Päivitä sivu ja yritä uudelleen", Notification.Type.ERROR_MESSAGE).setDelayMsec(5000);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                JavaScript.getCurrent().execute("location.reload()");
             });
             cancelBtn.addClickListener(clickEvent -> popUpView.close());
 
