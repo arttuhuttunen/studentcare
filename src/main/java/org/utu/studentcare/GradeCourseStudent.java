@@ -44,7 +44,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
 
         Optional<ValRange> gradeByExercises = student.exercises(authentication.getConnection(), courseInstance.instanceId).grade();
 
-        //This method restricts the ability to grade course only if course isn't already graded and all exercises are graded
+        //This method restricts the ability to grade course only when course isn't already graded or all exercises are graded
         if (!cgOpt.isPresent() && gradeByExercises.get().min == gradeByExercises.get().max) {
             exerciseGrid.addComponent(new Label("Tehtävien pisteiden mukaan laskettu kurssiarvosana on: " + gradeByExercises.get().min));
             exerciseGrid.addComponent(new Button("Hyväksy kurssiarvosana", click -> {
@@ -73,6 +73,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
             }
         }
 
+        //Loads selected student's all exercises
         for (ExerciseSpec exerciseSpec : courseInstance.exerciseSpecs().getExerciseDecls()){
             exerciseGrid.addComponent(new Label(exerciseSpec.getDescription()));
 
@@ -83,12 +84,17 @@ public class GradeCourseStudent extends VerticalLayout implements View {
                 Optional<Exercise> searchParams = Exercise.find(authentication.getConnection(), student.id, courseInstance.instanceId, exerciseSpec.getId());
 
                 exerciseGrid.addComponent(new Label("Tehtävä tallennettu " + searchParams.get().uploadDate));
-                exerciseGrid.addComponent(new TextArea("Vastaus tehtävään", searchParams.get().uploadResource));
-                exerciseGrid.addComponent(new TextArea("Opiskelijan vapaavalintainen kommentti", searchParams.get().comment));
+                //exerciseGrid.addComponent(new TextArea("Vastaus tehtävään", searchParams.get().uploadResource));
+                //exerciseGrid.addComponent(new TextArea("Opiskelijan vapaavalintainen kommentti", searchParams.get().comment));
+                TextArea studentAnswer = new TextArea("Vastaus tehtävään", searchParams.get().uploadResource);
+                TextArea studentComment = new TextArea("Opiskelijan vapaavalintainen kommentti", searchParams.get().comment);
+                studentAnswer.setReadOnly(true);
+                studentComment.setReadOnly(true);
                 TextArea teacherComment = new TextArea("Opettajan kommentti");
                 TextField gradeField = new TextField("Arvioi suoritus (pistejakauma välillä " + exerciseSpec.getRange() + ")");
                 Button gradeBtn = new Button("Arvostele");
                 Button cancelBtn = new Button("Peruuta");
+
                 if (searchParams.get().graded()) {
                     exerciseGrid.addComponent(new Label("Tehtävä arvioitu " + searchParams.get().gradeDate));
                     teacherComment.setValue(searchParams.get().teacherComment);
@@ -103,7 +109,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
                             exercise.grade(authentication.getConnection(), authentication.getStudent().get().id, Double.parseDouble(gradeField.getValue()), teacherComment.getValue());
 
                             loadExercises();
-                            Notification.show("Tehtävä " + exerciseSpec.getDescription() + " arvioitu onnistuneesti!");
+                            Notification.show("Tehtävä " + exerciseSpec.getDescription() + " arvioitu onnistuneesti!").setDelayMsec(5000);
                         } else {
                             Notification.show("Antamasi pistemäärä (" + gradeField.getValue() + ") ei ole tehtävän pistealueella (" + exerciseSpec.possibleValues() + "). Yritä uudestaan", Notification.Type.ERROR_MESSAGE).setDelayMsec(5000);
                         }
@@ -118,7 +124,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
                     gradeField.clear();
                     teacherComment.clear();
                 });
-                exerciseGrid.addComponents(gradeField, teacherComment, gradeBtn, cancelBtn);
+                exerciseGrid.addComponents(studentAnswer, studentComment, gradeField, teacherComment, gradeBtn, cancelBtn);
             } else {
                 exerciseGrid.addComponent(new Label("Opiskelija ei ole vielä vastannut tehtävään"));
             }

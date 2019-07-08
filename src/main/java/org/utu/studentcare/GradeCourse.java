@@ -22,7 +22,7 @@ public class GradeCourse extends VerticalLayout implements View {
     public GradeCourse(SessionAuthentication authentication, CourseInstance courseInstance) {
         this.authentication = authentication;
         this.courseInstance = courseInstance;
-        addComponent(new Label("Kurssin " + courseInstance.name + " arvostelunäkymä"));
+        addComponent(new Label("Kurssin " + courseInstance.name + " arvostelu"));
         addComponent(studentGrid);
         studentGrid.setWidth("1000");
     }

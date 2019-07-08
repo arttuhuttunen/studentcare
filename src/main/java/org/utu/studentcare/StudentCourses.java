@@ -25,7 +25,7 @@ public class StudentCourses extends VerticalLayout implements View {
     public StudentCourses(SessionAuthentication authentication) throws SQLException, AppLogicException {
         this.authentication = authentication;
         courseGrid = new Grid<>();
-        addComponent(new Label("Omat kurssit näkymä"));
+        addComponent(new Label("Omat kurssisi"));
 
         Student opt = authentication.getStudent().get(); //Student opt is for shortening Optional parameters for better readability
         courseGrid.setWidthUndefined();

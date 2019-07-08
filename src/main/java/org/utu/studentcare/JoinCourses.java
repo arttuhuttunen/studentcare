@@ -20,7 +20,7 @@ public class JoinCourses extends VerticalLayout implements View {
     List<CourseInstance> courses;
     SessionAuthentication authentication;
     public JoinCourses(SessionAuthentication authentication){
-        addComponent(new Label("Kurssi-ilmo näkymä"));
+        addComponent(new Label("Kursseille liittyminen"));
         courseGrid = new Grid<>();
         courseGrid.setWidth("800");
         this.authentication = authentication;

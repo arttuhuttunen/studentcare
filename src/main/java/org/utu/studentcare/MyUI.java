@@ -9,6 +9,8 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 import org.sqlite.SQLiteConnection;
 import org.sqlite.core.DB;
@@ -40,6 +42,7 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
+        VaadinSession.getCurrent().getSession().setMaxInactiveInterval(-1); //disables session timeout
         if (!authentication.isUserSignedIn()) {
 
             final VerticalLayout layout = new VerticalLayout();
@@ -58,6 +61,9 @@ public class MyUI extends UI {
                             setContent(mw);
                             //MainView mw = new MainView(MyUI.this, authentication);
                             //navigator.addView("", mw);
+                        } else {
+                            connection.close();
+                            Notification.show("Väärä käyttäjätunnus tai salasana", Notification.Type.ERROR_MESSAGE).setPosition(Position.TOP_CENTER);
                         }
                     } catch (Exception e) {e.printStackTrace();}
 

@@ -8,7 +8,7 @@ import org.utu.studentcare.db.DBCleaner;
 
 import java.sql.SQLException;
 
-public class DbControl extends HorizontalLayout implements View {
+public class DbControl extends VerticalLayout implements View {
     SessionAuthentication authentication;
 
     public DbControl(SessionAuthentication authentication) {
