@@ -18,6 +18,7 @@ import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.*;
 
+//This view shows user's current courses, and gives ability to either view exercises or leave course
 public class StudentCourses extends VerticalLayout implements View {
     SessionAuthentication authentication;
     Grid<CourseInstance> courseGrid;
@@ -49,9 +50,6 @@ public class StudentCourses extends VerticalLayout implements View {
             e.printStackTrace();
         }
         courseGrid.setItems(courses);
-        /*courseGrid.addColumn( course -> (course.wholeNameId(40); tempObject = course), new ButtonRenderer(clickevent -> {
-            navigator.navigateTo("CourseView", navigator.addView(new CourseView(authentication.getConnection(), ));
-        })).setCaption("Kurssin nimi");*/
         courseGrid.addColumn(courseInstance -> courseInstance.wholeNameId(40)).setCaption("Kurssin nimi").setId("courseName");
         courseGrid.addColumn(status -> {
             try {
@@ -64,14 +62,11 @@ public class StudentCourses extends VerticalLayout implements View {
         courseGrid.sort("courseName", SortDirection.ASCENDING);
         courseGrid.addColumn(course -> "Näytä kurssin tiedot",
                 new ButtonRenderer(clickevent -> {
-                    try {
-                        getUI().getNavigator().addView("CourseView", new CourseView(authentication, (CourseInstance) clickevent.getItem()));
-                    } catch (AppLogicException e) {
-                        e.printStackTrace();
-                    }
+                    getUI().getNavigator().addView("CourseView", new CourseView(authentication, (CourseInstance) clickevent.getItem())); //Navigates to exercise view of specific course
                     getUI().getNavigator().navigateTo("CourseView");
                 }));
-        //courseGrid.setHeightByRows(courses.size());
+
+        //This (quite long) statement creates on-window pop-up, which checks whether user really wants to leave course
         courseGrid.addColumn(part -> "Poistu kurssilta",
                 new ButtonRenderer<>(clickevent -> {
                     VerticalLayout popUpContent = new VerticalLayout();

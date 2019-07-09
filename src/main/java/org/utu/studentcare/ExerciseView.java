@@ -13,6 +13,7 @@ import org.utu.studentcare.db.orm.Exercise;
 import java.sql.SQLException;
 import java.util.Optional;
 
+//This view shows specific courses specific exercise
 public class ExerciseView extends VerticalLayout implements View {
     SessionAuthentication authentication;
     ExerciseSpec exerciseSpec;
@@ -37,7 +38,7 @@ public class ExerciseView extends VerticalLayout implements View {
             exerciseLayout.removeAllComponents();
             int studentID = authentication.getStudent().get().id;
             Exercise exercise = new Exercise(studentID, courseInstance.instanceId, exerciseSpec.getId(), exerciseSpec);
-            Optional<Exercise> searchParams = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId());
+            Optional<Exercise> searchParams = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId()); //For shortening method parameters
 
             exerciseLayout.addComponent(new Label("Kurssi: " + courseInstance.wholeNameId(40)));
             exerciseLayout.addComponent(new Label("Harjoituksen " + exerciseSpec.getDescription() + " palautuslomake"));
@@ -76,7 +77,6 @@ public class ExerciseView extends VerticalLayout implements View {
                         }
                     }
             );
-            //Exercise exercise = Exercise.find(authentication.getConnection(), studentID, courseInstance.instanceId, exerciseSpec.getId()).orElseThrow(() -> new AppLogicException("Harjoitusta ei löytynyt"));
 
             cancelButton.addClickListener(clickEvent ->
                     getUI().getNavigator().navigateTo("CourseView"));

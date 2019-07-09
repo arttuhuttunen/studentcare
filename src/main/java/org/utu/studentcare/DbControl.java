@@ -8,6 +8,7 @@ import org.utu.studentcare.db.DBCleaner;
 
 import java.sql.SQLException;
 
+//This view shows option to clean database for administrator
 public class DbControl extends VerticalLayout implements View {
     SessionAuthentication authentication;
 
@@ -16,6 +17,8 @@ public class DbControl extends VerticalLayout implements View {
         addComponent(new Label("Tietokannan hallinta"));
         Button dbBtn = new Button("Alusta tietokanta");
         addComponent(dbBtn);
+
+        //Clicking button opens confirmation window
         dbBtn.addClickListener(click -> {
             VerticalLayout popUpContent = new VerticalLayout();
             HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -35,9 +38,9 @@ public class DbControl extends VerticalLayout implements View {
             confirmBtn.addClickListener(clickEvent -> {
                 try {
                     DBCleaner dbCleaner = new DBCleaner(authentication.getConnection());
-                    System.out.println(dbCleaner.wipeTables().populateTables().debug());
+                    System.out.println(dbCleaner.wipeTables().populateTables().debug()); //Database cleaning debug pushing to console output
                     if (authentication.logOut()) {
-                        getUI().close();
+                        getUI().close(); //Closes Vaadin session after successful logout
                         JavaScript.getCurrent().execute("location.reload()");
                     } else {
                         Notification.show("Virhe uloskirjautumisessa. Päivitä sivu ja yritä uudelleen", Notification.Type.ERROR_MESSAGE).setDelayMsec(5000);

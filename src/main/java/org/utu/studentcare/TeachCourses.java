@@ -12,6 +12,7 @@ import org.utu.studentcare.db.orm.Student;
 import java.sql.SQLException;
 import java.util.List;
 
+//This view shows courses, which user isn't teaching yet
 public class TeachCourses extends VerticalLayout implements View {
     Grid<CourseInstance> courseGrid = new Grid<>();
     List<CourseInstance> courses;
@@ -39,7 +40,7 @@ public class TeachCourses extends VerticalLayout implements View {
         courseGrid.addColumn(teach -> "Ala opettaa kurssia",
                 new ButtonRenderer<>(clickevent -> {
                     try {
-                        if (opt.asTeacher().teachCourse(authentication.getConnection(), CourseInstance.findI(authentication.getConnection(), clickevent.getItem().instanceId).get())) {
+                        if (opt.asTeacher().teachCourse(authentication.getConnection(), CourseInstance.findI(authentication.getConnection(), clickevent.getItem().instanceId).get())) { //Tries to update db about new course teacher, otherwise show error
                             loadColumns();
                             Notification.show("Opetat nyt kurssia " + clickevent.getItem().wholeNameId(40)).setDelayMsec(3000);
                         } else {

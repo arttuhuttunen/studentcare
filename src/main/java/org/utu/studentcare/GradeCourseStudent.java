@@ -13,6 +13,7 @@ import scala.App;
 import java.sql.SQLException;
 import java.util.Optional;
 
+//This view shows specific students ALL exercises of specific course in one page
 public class GradeCourseStudent extends VerticalLayout implements View {
     SessionAuthentication authentication;
     Student student;
@@ -69,6 +70,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
             }
         }
 
+        //If course is graded -> show info about grade and grading acceptation status
         if (cgOpt.isPresent()) {
             exerciseGrid.addComponent(new Label("Kurssi on arvioitu " + cgOpt.get().gradeDate +  " arvosanalla " + cgOpt.get().grade));
             if (cgOpt.get().adminDate.isEmpty()) {
@@ -89,8 +91,6 @@ public class GradeCourseStudent extends VerticalLayout implements View {
                 Optional<Exercise> searchParams = Exercise.find(authentication.getConnection(), student.id, courseInstance.instanceId, exerciseSpec.getId());
 
                 exerciseGrid.addComponent(new Label("Tehtävä tallennettu " + searchParams.get().uploadDate));
-                //exerciseGrid.addComponent(new TextArea("Vastaus tehtävään", searchParams.get().uploadResource));
-                //exerciseGrid.addComponent(new TextArea("Opiskelijan vapaavalintainen kommentti", searchParams.get().comment));
                 TextArea studentAnswer = new TextArea("Vastaus tehtävään", searchParams.get().uploadResource);
                 TextArea studentComment = new TextArea("Opiskelijan vapaavalintainen kommentti", searchParams.get().comment);
                 studentAnswer.setReadOnly(true);
@@ -100,6 +100,7 @@ public class GradeCourseStudent extends VerticalLayout implements View {
                 Button gradeBtn = new Button("Arvostele");
                 Button cancelBtn = new Button("Peruuta");
 
+                //If exercise is already graded -> load grading data from db, and disable gradingfields and upload buttons
                 if (searchParams.get().graded()) {
                     exerciseGrid.addComponent(new Label("Tehtävä arvioitu " + searchParams.get().gradeDate));
                     teacherComment.setValue(searchParams.get().teacherComment);

@@ -6,19 +6,18 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import org.utu.studentcare.applogic.AppLogicException;
-import org.utu.studentcare.db.orm.Course;
 import org.utu.studentcare.db.orm.CourseInstance;
 import org.utu.studentcare.db.orm.Student;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+//This view shows courses which user isn't attending, and gives ability to join them
 public class JoinCourses extends VerticalLayout implements View {
     Grid<CourseInstance> courseGrid;
     List<CourseInstance> courses;
     SessionAuthentication authentication;
+
     public JoinCourses(SessionAuthentication authentication){
         addComponent(new Label("Kursseille liittyminen"));
         courseGrid = new Grid<>();

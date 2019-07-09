@@ -15,13 +15,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+//This view shows chosen courses exercises
 public class CourseView extends VerticalLayout implements View {
     SessionAuthentication authentication;
     CourseInstance courseInstance;
     Grid<ExerciseSpec> exercisesGrid;
     VerticalLayout exerciseLayout;
 
-    public CourseView(SessionAuthentication authentication, CourseInstance courseInstance) throws AppLogicException {
+    public CourseView(SessionAuthentication authentication, CourseInstance courseInstance) {
         this.authentication = authentication;
         this.courseInstance = courseInstance;
         addComponent(new Label("Kurssin " + courseInstance.wholeNameId(40) + " tehtävät"));
@@ -40,8 +41,8 @@ public class CourseView extends VerticalLayout implements View {
         }
         exercisesGrid.removeAllColumns();
         try {
-            if (CourseGrade.find(authentication.getConnection(), authentication.getStudent().get().id, courseInstance.instanceId).isPresent()) {
-                Optional<CourseGrade> cgOpt = CourseGrade.find(authentication.getConnection(), authentication.getStudent().get().id, courseInstance.instanceId); //Shortens method parameters
+            if (CourseGrade.find(authentication.getConnection(), authentication.getStudent().get().id, courseInstance.instanceId).isPresent()) { //.isPresent() checks whether Course has been graded in db
+                Optional<CourseGrade> cgOpt = CourseGrade.find(authentication.getConnection(), authentication.getStudent().get().id, courseInstance.instanceId); //Shortens method parameters for better code readability
                 if (cgOpt.get().graded()) {
                     exerciseLayout.addComponent(new Label("Kurssi on arvioitu " + cgOpt.get().gradeDate + " arvosanalla " + cgOpt.get().grade));
                     if (cgOpt.get().adminDate.isEmpty()) {

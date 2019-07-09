@@ -43,6 +43,8 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
 
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(-1); //disables session timeout
+
+        //Checks whether user is already signed in on current session, if not -> show login page
         if (!authentication.isUserSignedIn()) {
 
             final VerticalLayout layout = new VerticalLayout();
@@ -56,13 +58,13 @@ public class MyUI extends UI {
 
                     try {
                         SQLConnection connection = SQLConnection.createConnection("value4life.db", false);
+
+                        //if login is successful -> load mainview
                         if (authentication.loginControl(connection, uname, pword)) {
                             MainView mw = new MainView(MyUI.this, authentication);
                             setContent(mw);
-                            //MainView mw = new MainView(MyUI.this, authentication);
-                            //navigator.addView("", mw);
                         } else {
-                            connection.close();
+                            connection.close(); //closes failed connection, otherwise one failed login could lock database
                             Notification.show("Väärä käyttäjätunnus tai salasana", Notification.Type.ERROR_MESSAGE).setPosition(Position.TOP_CENTER);
                         }
                     } catch (Exception e) {e.printStackTrace();}
@@ -86,6 +88,7 @@ public class MyUI extends UI {
         }
     }
 
+    //Disables WebApp restart by browser refresh (multiple sessions don't work because of db lock)
     @Override
     protected void refresh(VaadinRequest request) {
     }

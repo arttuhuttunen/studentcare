@@ -6,12 +6,12 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import org.utu.studentcare.applogic.AppLogicException;
-import org.utu.studentcare.applogic.Session;
 import org.utu.studentcare.db.orm.CourseInstance;
 import org.utu.studentcare.db.orm.Student;
 
 import java.sql.SQLException;
 
+//This view shows participating students of specific course
 public class GradeCourse extends VerticalLayout implements View {
     Grid<Student> studentGrid = new Grid<>();
     SessionAuthentication authentication;
@@ -37,8 +37,6 @@ public class GradeCourse extends VerticalLayout implements View {
 
     private void loadColumns() throws SQLException, AppLogicException {
         studentGrid.removeAllColumns();
-        Student opt = authentication.getStudent().get();
-
         studentGrid.setItems(courseInstance.students(authentication.getConnection()));
         studentGrid.addColumn(studentName -> studentName.firstNames).setCaption("Etunimet").setId("firstNames");
         studentGrid.addColumn(studentName -> studentName.familyName).setCaption("Sukunimi");

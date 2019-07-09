@@ -12,12 +12,13 @@ import org.utu.studentcare.db.orm.Student;
 import java.sql.SQLException;
 import java.util.List;
 
+//This view shows courses what user is teaching, and gives option to view student exercises or abandon course
 public class GradeCourses extends VerticalLayout implements View {
     Grid<CourseInstance> courseGrid = new Grid<>();
     List<CourseInstance> courses;
     SessionAuthentication authentication;
     public GradeCourses(SessionAuthentication authentication) {
-        addComponent(new Label("Arvostele kursseja näkymä"));
+        addComponent(new Label("Kurssien arvostelu"));
         this.authentication = authentication;
         courseGrid.setWidth("1200");
         addComponent(courseGrid);
@@ -41,6 +42,8 @@ public class GradeCourses extends VerticalLayout implements View {
                     getUI().getNavigator().addView("GradeCourse", new GradeCourse(authentication, clickevent.getItem()));
                     getUI().getNavigator().navigateTo("GradeCourse");
                 }));
+
+        //Just like in StudentCourses, this asks confirmation to abandon course
         courseGrid.addColumn(course -> "Lopeta kurssin opettaminen",
                 new ButtonRenderer<>(clickevent -> {
                     VerticalLayout popUpContent = new VerticalLayout();

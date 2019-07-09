@@ -14,6 +14,7 @@ import org.utu.studentcare.db.orm.CourseGrade;
 import java.sql.SQLException;
 import java.util.List;
 
+//This view shows administrator course grades waiting for approval
 public class ApproveCourses extends VerticalLayout implements View {
     SessionAuthentication authentication;
     Grid<CourseGrade> gradeGrid;
