@@ -3,10 +3,7 @@ package org.utu.studentcare;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.Session;
@@ -25,6 +22,10 @@ public class GradeCourse extends VerticalLayout implements View {
         addComponent(new Label("Kurssin " + courseInstance.name + " arvostelu"));
         addComponent(studentGrid);
         studentGrid.setWidth("1000");
+        Button cancelBtn = new Button("Peruuta");
+        cancelBtn.addClickListener(clickEvent ->
+                getUI().getNavigator().navigateTo("GradeCourses"));
+        addComponent(cancelBtn);
     }
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         try {

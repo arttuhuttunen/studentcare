@@ -76,14 +76,11 @@ public class StudentCourses extends VerticalLayout implements View {
                 new ButtonRenderer<>(clickevent -> {
                     VerticalLayout popUpContent = new VerticalLayout();
                     HorizontalLayout buttonLayout = new HorizontalLayout();
-                    popUpContent.setWidth("100");
                     Window popupView = new Window(null);
                     popupView.setClosable(false);
                     popupView.setVisible(true);
                     popupView.center();
                     popupView.setResizable(false);
-                    /*popupView.setWidth("800");
-                    popupView.setHeight("200");*/
                     popupView.setHeightUndefined();
                     popupView.setWidthUndefined();
                     popUpContent.setWidthUndefined();

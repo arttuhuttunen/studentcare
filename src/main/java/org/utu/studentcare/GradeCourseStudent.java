@@ -27,6 +27,11 @@ public class GradeCourseStudent extends VerticalLayout implements View {
         addComponent(new Label("Kurssin " + courseInstance.wholeNameId(40) + " arvostelu"));
         addComponent(new Label("Opiskelija: " + student.wholeName()));
         addComponent(exerciseGrid);
+        Button cancelBtn = new Button("Peruuta");
+        cancelBtn.addClickListener(clickEvent ->
+                getUI().getNavigator().navigateTo("GradeCourse"));
+        addComponent(cancelBtn);
+
     }
 
     public void enter(ViewChangeListener.ViewChangeEvent event) {

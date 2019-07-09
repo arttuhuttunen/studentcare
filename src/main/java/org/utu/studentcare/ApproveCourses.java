@@ -23,7 +23,7 @@ public class ApproveCourses extends VerticalLayout implements View {
         addComponent(new Label("Kurssiarvostelujen lisääminen opintorekisteriin"));
         gradeGrid = new Grid<>();
         addComponent(gradeGrid);
-        gradeGrid.setWidth("1200");
+        gradeGrid.setWidth("1400");
     }
 
     public void enter(ViewChangeListener.ViewChangeEvent event) {

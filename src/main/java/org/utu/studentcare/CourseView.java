@@ -63,6 +63,9 @@ public class CourseView extends VerticalLayout implements View {
                     getUI().getNavigator().navigateTo("ExerciseView");
                 })
         );
-        exerciseLayout.addComponent(exercisesGrid);
+        Button cancelBtn = new Button("Peruuta");
+        cancelBtn.addClickListener(clickEvent ->
+                getUI().getNavigator().navigateTo("StudentCourses"));
+        exerciseLayout.addComponents(exercisesGrid, cancelBtn);
     }
 }
