@@ -17,7 +17,7 @@ Ohjelmakoodissa selostetaan kommentteina kunkin näkymäluokan tarkoitus, ja koo
 Toteutuksessani riippuvuuksien hallinta on siirretty sbt:stä Maveniin, sillä sbt:n Vaadin tuki oli vanhentunut ja aikataulun takia hankala itse toteuttaa.
 
 Mavenin lataukset ja asennusohjeet löytyvät [projektin sivuilta](https://maven.apache.org/). 
-Projekti ladataan komennolla `git clone https://gitlab.utu.fi/arhutt/studentcare/` , jonka jälkeen tarvittavat osat asennetaan komennolla 'mvn install' (projektikansiossa).
+Projekti ladataan komennolla `git clone https://gitlab.utu.fi/arhutt/studentcare/` , jonka jälkeen tarvittavat osat asennetaan komennolla `mvn install` (projektikansiossa).
 
 Itse ohjelma ajetaan paikallisessa Jetty-palvelimessa, joka käynnistyy komennolla `mvn jetty:run`. Sovellus on valmis käytettäväksi kun terminaalissa lukee "Started Jetty Server". Selaimessa sovellus löytyy osoitteesta [localhost:8080](localhost:8080). Toiminnallisuus testattu Firefox-selaimella. Näkymät eivät skaalaudu ikkunan koon mukaan, mutta kaikki näkyvät oikein kun selainikkuna on tarpeeksi suuri.
 
