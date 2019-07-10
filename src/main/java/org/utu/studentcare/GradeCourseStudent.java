@@ -48,9 +48,9 @@ public class GradeCourseStudent extends VerticalLayout implements View {
         exerciseGrid.removeAllComponents();
         Optional<CourseGrade> cgOpt = CourseGrade.find(authentication.getConnection(), student.id, courseInstance.instanceId); //Shortens method parameters
 
-        Optional<ValRange> gradeByExercises = student.exercises(authentication.getConnection(), courseInstance.instanceId).grade();
+        Optional<ValRange> gradeByExercises = student.exercises(authentication.getConnection(), courseInstance.instanceId).grade();  //ValRange for calculated grade range
 
-        //This method restricts the ability to grade course only when course isn't already graded or all exercises are graded
+        //This method restricts the ability to grade course only when course isn't already graded or all exercises are graded (CourseGrade returns notPresent when no grade found in db, and ValRange has narrowed to one value)
         if (!cgOpt.isPresent() && gradeByExercises.get().min == gradeByExercises.get().max) {
             exerciseGrid.addComponent(new Label("Tehtävien pisteiden mukaan laskettu kurssiarvosana on: " + gradeByExercises.get().min));
             exerciseGrid.addComponent(new Button("Hyväksy kurssiarvosana", click -> {

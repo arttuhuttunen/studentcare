@@ -1,6 +1,7 @@
 package org.utu.studentcare;
 
 import com.vaadin.data.Binder;
+import com.vaadin.event.dd.acceptcriteria.Not;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
@@ -28,6 +29,7 @@ public class CourseView extends VerticalLayout implements View {
         addComponent(new Label("Kurssin " + courseInstance.wholeNameId(40) + " tehtävät"));
         exercisesGrid = new Grid<>();
         exerciseLayout = new VerticalLayout();
+        exercisesGrid.setWidth("1000");
         addComponent(exerciseLayout);
     }
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -58,6 +60,25 @@ public class CourseView extends VerticalLayout implements View {
         exerciseLayout.addComponent(new Label(""));
         exercisesGrid.setItems(exercises);
         exercisesGrid.addColumn(ExerciseSpec::getDescription).setCaption("Harjoituksen nimi");
+        exercisesGrid.addColumn(exerciseState -> {
+            Optional<Exercise> exerciseOpt = null; //shortens method parameters
+            try {
+                exerciseOpt = Exercise.find(authentication.getConnection(), authentication.getStudent().get().id, courseInstance.instanceId, exerciseState.getId());
+            } catch (SQLException | AppLogicException e) {
+                e.printStackTrace();
+                return Notification.show("Tapahtui odottamaton virhe, yritä myöhemmin uudestaan", Notification.Type.ERROR_MESSAGE);
+            }
+            if (exerciseOpt.isPresent()) { // Exercise is present only when uploaded, otherwise optional returns 'No value present'
+                if (exerciseOpt.get().graded()) {
+                    return "Arvosteltu";
+                } else if (exerciseOpt.get().uploaded()) {
+                    return "Palautettu";
+                }
+            } else {
+                return "Ei vielä palautettu";
+            }
+            return Notification.show("Tapahtui odottamaton virhe, yritä myöhemmin uudestaan", Notification.Type.ERROR_MESSAGE);
+        }).setCaption("Tehtävän tilanne");
         exercisesGrid.addColumn(exercise -> "Siirry harjoitukseen",
                 new ButtonRenderer(clickevent -> {
                     getUI().getNavigator().addView("ExerciseView", new ExerciseView(authentication, (ExerciseSpec)clickevent.getItem(), courseInstance));
