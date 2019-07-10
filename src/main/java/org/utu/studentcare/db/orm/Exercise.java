@@ -52,7 +52,9 @@ public class Exercise {
 
     public Exercise grade(SQLConnection connection, int teacherId, double grade, String teacherComment) throws SQLException, AppLogicException {
         Exercise e = new Exercise(studentId, instanceId, exerciseId, uploadResource, uploadDate, teacherId, comment, teacherComment, grade, connection.now(), specification);
+        System.out.println("DEBUG: Exercise.java tmp object is " + e.toString());
         e.updateDB(connection);
+        System.out.println("DEBUG: Exercise updated to db");
         return e;
     }
 
@@ -67,10 +69,14 @@ public class Exercise {
             throw new SQLException("Not graded or uploaded!");
         int i =
                 find(connection, studentId, instanceId, exerciseId).isPresent() ?
-                        connection.update("update 'exercises' set uploadResource = ?, uploadDate = ?, teacherId = ?, comment = ?, teacherComment = ?, grade = ?, gradeDate = ? where studentId == ? and instanceId == ? and gradeDate = ?", uploadResource, uploadDate, teacherId, comment, teacherComment, grade, gradeDate, studentId, instanceId, exerciseId)
+                        /*Original sql query, contains faulty where clause (it searches nonexistent gradeDate instead of exerciseId):
+                        * connection.update("update 'exercises' set uploadResource = ?, uploadDate = ?, teacherId = ?, comment = ?, teacherComment = ?, grade = ?, gradeDate = ? where studentId == ? and instanceId == ? and gradeDate = ?", uploadResource, uploadDate, teacherId, comment, teacherComment, grade, gradeDate, studentId, instanceId, exerciseId)
+                        * */
+                        connection.update("update 'exercises' set uploadResource = ?, uploadDate = ?, teacherId = ?, comment = ?, teacherComment = ?, grade = ?, gradeDate = ? where studentId == ? and instanceId == ? and exerciseId = ?", uploadResource, uploadDate, teacherId, comment, teacherComment, grade, gradeDate, studentId, instanceId, exerciseId)
                         :
                         connection.insert("insert into 'exercises'(uploadResource,uploadDate,teacherId,comment,teacherComment,grade,gradeDate, studentId, instanceId, exerciseId) values (?,?,?,?,?,?,?,?,?,?)", uploadResource, uploadDate, teacherId, comment, teacherComment, grade, gradeDate, studentId, instanceId, exerciseId);
 
+        System.out.println("SQL DEBUG: i:s value is " + i);
         return i == 1;
 
     }

@@ -52,17 +52,18 @@ public class MainApp extends Application {
      */
     private void startGraphicalUI(Stage stage) {
         // TODO: toteuta!
+
     }
 
     @Override
     public void start(Stage stage) {
         // TODO: vaihda kun teet graafista käyttöliittymää
-        boolean textMode = true;
+        boolean textMode = false;
 
         if (textMode)
             startTextModeUI(stage);
         else
-            startGraphicalUI(stage);
+            startGraphicalUI(null);
     }
 
     /**

@@ -4,6 +4,7 @@ import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.applogic.ExerciseSpecs;
 import org.utu.studentcare.db.SQLConnection;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -86,9 +87,8 @@ public class CourseInstance extends Course {
         return connection.findAll(Student::fromDB, "select * from 'personnel' where id in (select studentId from 'coursestudents' where instanceId == ?)", instanceId);
     }
 
-    public CourseGrade grade(SQLConnection connection, Student s, int grade, Teacher t) throws SQLException, AppLogicException {
+    public boolean grade(SQLConnection connection, Student s, int grade, Teacher t) throws SQLException, AppLogicException {
         CourseGrade record = new CourseGrade(s.id, instanceId, grade, connection.now(), t.id);
-        record.updateDB(connection);
-        return record;
+        return record.updateDB(connection);
     }
 }
