@@ -136,6 +136,14 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx</artifactId>
+			<version>11</version>
+			<type>pom</type>
+		</dependency>
+
 	</dependencies>
 
 	<build>
