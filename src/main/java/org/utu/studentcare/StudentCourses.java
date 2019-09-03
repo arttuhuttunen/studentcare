@@ -7,7 +7,6 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 import com.vaadin.ui.renderers.ButtonRenderer;
-import javafx.beans.binding.When;
 import org.utu.studentcare.applogic.AppLogicException;
 import org.utu.studentcare.db.orm.Course;
 import org.utu.studentcare.db.orm.CourseInstance;
