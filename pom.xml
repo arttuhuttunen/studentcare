@@ -14,7 +14,7 @@
 	</prerequisites>
 
 	<properties>
-		<vaadin.version>8.8.1</vaadin.version>
+		<vaadin.version>8.14.1</vaadin.version>
 		<vaadin.plugin.version>8.8.1</vaadin.plugin.version>
 		<jetty.plugin.version>9.4.18.v20190429</jetty.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
